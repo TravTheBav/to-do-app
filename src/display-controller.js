@@ -8,23 +8,46 @@ export class DisplayController {
     }
 
     // creates a new project instance and sends addProject method to self and projectsController 
-    createProject() {
-        let project = new Project('test-project');
+    createProject(event) {
+        const form = document.querySelector('form#project-form');
+
+        const title = form.querySelector('input#title').value;
+        const description = form.querySelector('textarea#description').value;
+        const dateTime = form.querySelector('input#due-date').value;
+        const priorityOptions = document.querySelectorAll('input[name="priority"]');
+        let priority;
+
+        priorityOptions.forEach( (field) => {
+            if (field.checked) {
+                priority = field.value;
+            }
+        })
+
+        const project = new Project(title, description, dateTime, priority);        
         this.projectsController.addProject(project);
-        this.addProject(project);
+        console.log(this.projectsController.projects);
+        //this.addProject(project);
+
+        event.preventDefault();        
     }
 
     // wipes the new project form fields
-    clearProjectForm() {
+    clearNewProjectForm() {
         const projectForm = document.getElementById('project-form');
         const titleField = projectForm.querySelector('#project-title');
         titleField.value = "";
     }
 
     // sets the event listener for the new project button
+    initNewProjectListener() {
+        let newProjectBtn = document.getElementById('new-project');
+        newProjectBtn.addEventListener('click', this.openNewProjectModal.bind(this));
+    }
+
+    // sets the event listener for the create project button
     initCreateProjectListener() {
-        let createProjectBtn = document.getElementById('new-project');
-        createProjectBtn.addEventListener('click', this.openNewProjectModal.bind(this));
+        let createProjectBtn = document.getElementById('create-project');
+        createProjectBtn.addEventListener('click', this.createProject.bind(this));
     }
 
     // sets close button event listener for a modal
@@ -39,7 +62,8 @@ export class DisplayController {
         modals.forEach( (modal) => {
             this.initCloseModalListener(modal);
         })
-        this.initCreateProjectListener();        
+        this.initNewProjectListener();
+        this.initCreateProjectListener();    
     }
 
     // adds a project to the sidebar display
@@ -51,7 +75,7 @@ export class DisplayController {
     }
 
     openNewProjectModal() {
-        const modal = document.getElementById('new-project-form');
+        const modal = document.querySelector('.modal');
         modal.style.display = 'block';
     }
 

@@ -23,10 +23,10 @@
         </nav>
         <main class="bg-primary"></main>
     </div>
-    <div class="modal" id="new-project-form">
+    <div class="modal">
         <button class="close">X</button>
-        <h1>New Project</h1>
-        <form>
+        <h1 id="modal-header">New Project</h1>
+        <form id="project-form">
             <div class="form-control">
                 <label for="title">Title:</label>
                 <input type="text" id="title" class="block">
@@ -48,7 +48,7 @@
                 <legend>Priority:</legend>
 
                 <div>
-                    <input type="radio" name="priority" value="low" id="low">
+                    <input type="radio" name="priority" value="low" id="low" checked="true">
                     <label for="low">low</label>
                 </div>
 
@@ -63,7 +63,7 @@
                 </div>
             </fieldset>
             
-            <button type="submit">Create Project</button>
+            <button type="submit" id="create-project">Create Project</button>
         </form>
     </div>
     <script src="main.js"></script>
