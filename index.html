@@ -6,21 +6,66 @@
     <title>To Do</title>
 </head>
 <body>
-    <header class="bg-secondary">
-        <div class="site-logo"><h1><em>To-Do</em></h1></div>
-        <div class="top-bar-buttons">
-            <button id="new-project" class="new-project">
-                <div class="button-icon medium-icon"></div>
-            </button>
-        </div>
-    </header>
-    <nav class="bg-tertiary">
-        <section id="projects">
-            <h3>Projects</h3>
-            <ul></ul>
-        </section>
-    </nav>
-    <main class="bg-primary"></main>
+    <div class="container">
+        <header class="bg-secondary">
+            <div class="site-logo"><h1><em>To-Do</em></h1></div>
+            <div class="top-bar-buttons">
+                <button id="new-project" class="new-project">
+                    <div class="button-icon medium-icon"></div>
+                </button>
+            </div>
+        </header>
+        <nav class="bg-tertiary">
+            <section id="projects">
+                <h3>Projects</h3>
+                <ul></ul>
+            </section>
+        </nav>
+        <main class="bg-primary"></main>
+    </div>
+    <div class="modal" id="new-project-form">
+        <button class="close">X</button>
+        <h1>New Project</h1>
+        <form>
+            <div class="form-control">
+                <label for="title">Title:</label>
+                <input type="text" id="title" class="block">
+            </div>
+
+            <div class="form-control">
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" cols="30" rows="10" class="block">
+                    Say stuff about your project here
+                </textarea>
+            </div>
+
+            <div class="form-control">
+                <label for="due-date">Due Date:</label>
+                <input type="datetime-local" id="due-date" class="block">                
+            </div>
+
+            <fieldset>
+                <legend>Priority:</legend>
+
+                <div>
+                    <input type="radio" name="priority" value="low" id="low">
+                    <label for="low">low</label>
+                </div>
+
+                <div>
+                    <input type="radio" name="priority" value="medium" id="medium">
+                    <label for="medium">medium</label>
+                </div>
+
+                <div>
+                    <input type="radio" name="priority" value="high" id="high">
+                    <label for="high">high</label>
+                </div>
+            </fieldset>
+            
+            <button type="submit">Create Project</button>
+        </form>
+    </div>
     <script src="main.js"></script>
 </body>
 </html>
