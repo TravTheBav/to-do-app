@@ -7,8 +7,11 @@ html, body {
     margin: 0;
 }
 
-body {
+body, .container {
     height: 100vh;
+}
+
+.container {
     display: grid;
     grid-template-areas: 
         "head head"
@@ -17,15 +20,15 @@ body {
     grid-template-columns: 240px 1fr;
 }
 
-body > header {
+.container > header {
     grid-area: head;
 }
 
-body > nav {
+.container > nav {
     grid-area: nav;
 }
 
-body > main {
+.container > main {
     grid-area: main;
 }
 
@@ -87,4 +90,29 @@ button.new-project {
 
 nav {
     padding: 1rem;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    background-color: rgb(59, 59, 74);
+    padding: 1rem 3rem;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+button.close {
+    position: absolute;
+    right: .5em;
+    top: .5em;
+}
+
+.block {
+    display: block;
+}
+
+form > * {
+    margin-bottom: 1rem;
 }
