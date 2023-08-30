@@ -6,16 +6,21 @@
     <title>To Do</title>
 </head>
 <body>
-    <main>
-        <div id="project-form">
-            <label for="project-title">Project Title</label>
-            <input type="text" id="project-title">
-            <button id="new-project">New Project</button>
+    <header class="bg-secondary">
+        <div class="site-logo"><h1><em>To-Do</em></h1></div>
+        <div class="top-bar-buttons">
+            <button id="new-project" class="new-project">
+                <div class="button-icon medium-icon"></div>
+            </button>
         </div>
-        
-        <h1>Projects</h1>
-        <ul class="projects"></ul>
-    </main>
+    </header>
+    <nav class="bg-tertiary">
+        <section id="projects">
+            <h3>Projects</h3>
+            <ul></ul>
+        </section>
+    </nav>
+    <main class="bg-primary"></main>
     <script src="main.js"></script>
 </body>
 </html>
