@@ -1,0 +1,90 @@
+html {
+    min-height: 100%;
+    color: beige;
+}
+
+html, body {
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+    display: grid;
+    grid-template-areas: 
+        "head head"
+        "nav  main";
+    grid-template-rows: 80px 1fr;
+    grid-template-columns: 240px 1fr;
+}
+
+body > header {
+    grid-area: head;
+}
+
+body > nav {
+    grid-area: nav;
+}
+
+body > main {
+    grid-area: main;
+}
+
+.bg-primary {
+    background-color: rgb(34, 34, 34);
+}
+
+.bg-secondary {
+    background-color: rgb(49, 49, 49);
+}
+
+.bg-tertiary {
+    background-color: rgb(59, 56, 56);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+header > * {
+    display: flex;
+    align-items: center;
+}
+
+button.new-project {
+    background-color: transparent;
+    border: none;
+}
+
+button.new-project > .button-icon {
+    background-color: beige;
+    -webkit-mask-image: url('./icons/file-plus.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: url('./icons/file-plus.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+button.new-project {
+    padding: 0px;
+}
+
+.small-icon {
+    width: 24px;
+    height: 24px;
+    -webkit-mask-size: 24px 24px;
+    mask-size: 24px 24px;
+}
+
+.medium-icon {
+    width: 36px;
+    height: 36px;
+    -webkit-mask-size: 36px 36px;
+    mask-size: 36px 36px;
+}
+
+nav {
+    padding: 1rem;
+}

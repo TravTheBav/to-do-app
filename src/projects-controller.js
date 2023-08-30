@@ -14,6 +14,5 @@ export class ProjectsController {
     deleteProject(project) {
         let index = this.projects.indexOf(project);
         this.projects.splice(index, 1);
-        console.log(this.projects);
     }
 }
