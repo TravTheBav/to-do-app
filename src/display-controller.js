@@ -54,7 +54,7 @@ export class DisplayController {
     // sets the event listener for the new project button
     initNewProjectListener() {
         let newProjectBtn = document.getElementById('new-project');
-        newProjectBtn.addEventListener('click', this.openNewProjectModal.bind(this));
+        newProjectBtn.addEventListener('click', this.openProjectModal.bind(this));
     }
 
     // sets the event listener for the create project button
@@ -82,22 +82,21 @@ export class DisplayController {
     initProjectLinkListener(projectLink) {
         projectLink.addEventListener('click', (function (event) {
             this.currentProject = this.projectsController.findProjectByTitle(projectLink.textContent);
-            const main = document.querySelector('main');
-            
-            const title = document.createElement('h2');
+            const projectCard = document.getElementById('current-project');
+
+            const title = projectCard.querySelector('#title');
             title.textContent = this.currentProject.title;
 
-            const description = document.createElement('p');
+            const description = projectCard.querySelector('#description');
             description.textContent = this.currentProject.description;
 
-            const dueDate = document.createElement('p');
+            const dueDate = projectCard.querySelector('#due-date');
             dueDate.textContent = this.currentProject.dueDate;
 
-            const priority = document.createElement('p');
+            const priority = projectCard.querySelector('#priority');
             priority.textContent = this.currentProject.priority;
 
-            const projectDetails = [title, description, dueDate, priority];
-            main.replaceChildren(...projectDetails);
+            if (window.getComputedStyle(projectCard).display == 'none') { projectCard.style.display = 'block'; }
             
             event.preventDefault();
         }).bind(this))
@@ -113,11 +112,11 @@ export class DisplayController {
 
         this.initProjectLinkListener(projectLink);
 
-        listWrapper.appendChild(projectLink)
+        listWrapper.appendChild(projectLink);
         this.projectsContainer.appendChild(listWrapper);
     }
 
-    openNewProjectModal() {
+    openProjectModal() {
         const modal = document.querySelector('.modal');
         modal.style.display = 'block';
     }

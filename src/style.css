@@ -16,6 +16,12 @@ a {
     text-decoration: none;
 }
 
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     display: grid;
     grid-template-areas: 
@@ -49,13 +55,13 @@ a {
     background-color: rgb(59, 56, 56);
 }
 
-header {
+.top-header {
     display: flex;
     justify-content: space-between;
     padding: 1rem;
 }
 
-header > * {
+.top-header > * {
     display: flex;
     align-items: center;
 }
@@ -120,4 +126,23 @@ button.close {
 
 form > * {
     margin-bottom: 1rem;
+}
+
+#current-project {
+    display: none;
+    width: 50%;
+    height: auto;
+}
+
+#current-project > #details {
+    margin-left: 2rem;
+}
+
+.card-header {
+    text-align: center;
+    padding: 0.75rem 0px;
+}
+
+.card-header > h1 {
+    margin: 0px;
 }
