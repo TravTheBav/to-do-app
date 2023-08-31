@@ -5,6 +5,7 @@ export class DisplayController {
     constructor() {
         this.projectsController = new ProjectsController();
         this.projectsContainer = document.getElementById('projects');
+        this.currentProject = null;
     }
 
     // creates a new project instance and sends addProject method to self and projectsController 
@@ -31,7 +32,6 @@ export class DisplayController {
         // close modal afterwards
         const close = this.closeModal.bind(modal);
         close();
-        setTimeout( () => alert('project created'), 10);
         event.preventDefault();
     }
 
@@ -70,12 +70,42 @@ export class DisplayController {
         this.initCreateProjectListener();    
     }
 
+    initProjectLinkListener(projectLink) {
+        projectLink.addEventListener('click', (function (event) {
+            this.currentProject = this.projectsController.findProjectByTitle(projectLink.textContent);
+            const main = document.querySelector('main');
+            
+            const title = document.createElement('h2');
+            title.textContent = this.currentProject.title;
+
+            const description = document.createElement('p');
+            description.textContent = this.currentProject.description;
+
+            const dueDate = document.createElement('p');
+            dueDate.textContent = this.currentProject.dueDate;
+
+            const priority = document.createElement('p');
+            priority.textContent = this.currentProject.priority;
+
+            const projectDetails = [title, description, dueDate, priority];
+            main.replaceChildren(...projectDetails);
+            
+            event.preventDefault();
+        }).bind(this))
+    }
+
     // adds a project to the sidebar display
     addProject(project) {
-        let projectLink = document.createElement('li');
+        const listWrapper = document.createElement('li');
+        const projectLink = document.createElement('a');
         projectLink.classList.add('project-link');
+        projectLink.href = "";
         projectLink.innerHTML = project.title;
-        this.projectsContainer.appendChild(projectLink);
+
+        this.initProjectLinkListener(projectLink);
+
+        listWrapper.appendChild(projectLink)
+        this.projectsContainer.appendChild(listWrapper);
     }
 
     openNewProjectModal() {

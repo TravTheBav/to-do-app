@@ -11,6 +11,11 @@ body, .container {
     height: 100vh;
 }
 
+a {
+    color: beige;
+    text-decoration: none;
+}
+
 .container {
     display: grid;
     grid-template-areas: 
