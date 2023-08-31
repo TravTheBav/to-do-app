@@ -1,3 +1,4 @@
+import { forEach } from "lodash";
 import { Project } from "./project";
 import { ProjectsController } from "./projects-controller";
 
@@ -29,17 +30,25 @@ export class DisplayController {
         this.projectsController.addProject(project);
         this.addProject(project);
 
-        // close modal afterwards
+        // clear form and close modal afterwards
+        this.clearForm(form);
         const close = this.closeModal.bind(modal);
         close();
         event.preventDefault();
     }
 
     // wipes the new project form fields
-    clearNewProjectForm() {
-        const projectForm = document.getElementById('project-form');
-        const titleField = projectForm.querySelector('#project-title');
-        titleField.value = "";
+    clearForm(form) {
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach((input) => {
+            if (input.type == 'radio') {
+                if (input.value == 'low') {
+                    input.checked = true;  // reset priority to low
+                }
+            }   else {
+                input.value = null;
+            }
+        })
     }
 
     // sets the event listener for the new project button
