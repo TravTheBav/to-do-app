@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="container">
-        <header class="bg-secondary">
+        <header class="top-header bg-secondary">
             <div class="site-logo"><h1><em>To-Do</em></h1></div>
             <div class="top-bar-buttons">
                 <button id="new-project" class="new-project">
@@ -21,7 +21,21 @@
                 <ul></ul>
             </section>
         </nav>
-        <main class="bg-primary"></main>
+        <main class="bg-primary">
+            <section id="current-project" class="bg-secondary">
+                <header class="card-header bg-tertiary">
+                    <h1 id="title">Current Project</h1>
+                </header>
+                <div id="details">
+                    <h2>Description</h2>
+                    <p id="description">asdf</p>
+                    <h2>Project due</h2>
+                    <p id="due-date">asdf</p>
+                    <h2>Priority</h2>
+                    <p id="priority">asdf</p>
+                </div>
+            </section>
+        </main>
     </div>
     <div class="modal">
         <button class="close">X</button>
