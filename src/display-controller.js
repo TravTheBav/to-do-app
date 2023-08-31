@@ -10,6 +10,7 @@ export class DisplayController {
     // creates a new project instance and sends addProject method to self and projectsController 
     createProject(event) {
         const form = document.querySelector('form#project-form');
+        const modal = document.querySelector('.modal');
 
         const title = form.querySelector('input#title').value;
         const description = form.querySelector('textarea#description').value;
@@ -25,10 +26,13 @@ export class DisplayController {
 
         const project = new Project(title, description, dateTime, priority);        
         this.projectsController.addProject(project);
-        console.log(this.projectsController.projects);
-        //this.addProject(project);
+        this.addProject(project);
 
-        event.preventDefault();        
+        // close modal afterwards
+        const close = this.closeModal.bind(modal);
+        close();
+        setTimeout( () => alert('project created'), 10);
+        event.preventDefault();
     }
 
     // wipes the new project form fields
