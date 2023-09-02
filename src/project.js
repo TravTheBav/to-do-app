@@ -4,6 +4,7 @@ export class Project {
         this._description = description
         this._dueDate = dueDate
         this._priority = priority
+        this._tasks = []
     }
 
     get title() {
@@ -20,5 +21,9 @@ export class Project {
 
     get priority() {
         return this._priority
+    }
+
+    get tasks() {
+        return this._tasks
     }
 }

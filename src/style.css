@@ -134,8 +134,8 @@ form > * {
     height: auto;
 }
 
-#current-project > #details {
-    margin-left: 2rem;
+#current-project > #details, #current-project > #tasks {
+    margin: 0px 2rem;
 }
 
 .card-header {
@@ -144,5 +144,14 @@ form > * {
 }
 
 .card-header > h1 {
+    margin: 0px;
+}
+
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tasks-header > h2 {
     margin: 0px;
 }

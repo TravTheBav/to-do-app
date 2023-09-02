@@ -1,6 +1,7 @@
-import { format, getMinutes, getHours } from 'date-fns';
+import { formatTimeString } from './date-time-helpers';
 import { Project } from "./project";
 import { ProjectsController } from "./projects-controller";
+import { Task } from "./task";
 
 export class DisplayController {
     constructor() {
@@ -18,7 +19,7 @@ export class DisplayController {
         const description = form.querySelector('textarea#description').value;
         
         const dt = new Date(form.querySelector('input#due-date').value);        
-        const dateTime = this.formatTimeString(dt);
+        const dateTime = formatTimeString(dt);
         
         const priorityOptions = document.querySelectorAll('input[name="priority"]');
         let priority;
@@ -34,8 +35,7 @@ export class DisplayController {
 
         // clear form and close modal afterwards
         this.clearForm(form);
-        const close = this.closeModal.bind(modal);
-        close();
+        this.closeModal.bind(modal)();
         event.preventDefault();
     }
 
@@ -125,29 +125,5 @@ export class DisplayController {
 
     closeModal() {
         this.style.display = 'none';
-    }
-
-    formatTimeString(dateObject) {
-        let hours = getHours(dateObject);
-        let minutes = getMinutes(dateObject);
-        let amOrPm;
-
-        if (hours == 0) {
-            hours = 12;
-            amOrPm = 'AM';
-        } else if (hours == 12) {
-            hours = 12;
-            amOrPm = 'PM';
-        } else if (hours > 12) {
-            hours = hours % 12;
-            amOrPm = 'PM';
-        } else {
-            amOrPm = 'AM';
-        }
-        hours = String(hours);
-        minutes = String(minutes);
-
-        const output = format(dateObject, `MM/dd/yyyy, '${hours}':'${minutes}' '${amOrPm}'`);
-        return output;
     }
 }
