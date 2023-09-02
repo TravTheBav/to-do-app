@@ -55,14 +55,20 @@ export class DisplayController {
 
     // sets the event listener for the new project button
     initNewProjectListener() {
-        let newProjectBtn = document.getElementById('new-project');
+        const newProjectBtn = document.getElementById('new-project');
         newProjectBtn.addEventListener('click', this.openProjectModal.bind(this));
     }
 
     // sets the event listener for the create project button
     initCreateProjectListener() {
-        let createProjectBtn = document.getElementById('create-project');
+        const createProjectBtn = document.getElementById('create-project');
         createProjectBtn.addEventListener('click', this.createProject.bind(this));
+    }
+
+    // set the event listener for the add task button
+    initAddTaskListener() {
+        const addTaskBtn = document.getElementById('add-task');
+        addTaskBtn.addEventListener('click', this.addTask.bind(this));
     }
 
     // sets close button event listener for a modal
@@ -78,7 +84,8 @@ export class DisplayController {
             this.initCloseModalListener(modal);
         })
         this.initNewProjectListener();
-        this.initCreateProjectListener();    
+        this.initCreateProjectListener();
+        this.initAddTaskListener();    
     }
 
     initProjectLinkListener(projectLink) {
@@ -116,6 +123,18 @@ export class DisplayController {
 
         listWrapper.appendChild(projectLink);
         this.projectsContainer.appendChild(listWrapper);
+    }
+
+    // adds a new task to the current project
+    addTask() {
+        const totalTasks = this.currentProject.totalTasks();
+        const newTask = new Task(`task-${totalTasks + 1}`);
+        const tasksList = document.querySelector('section#tasks > ul');
+        this.currentProject.addTask(newTask);
+        const listElement = document.createElement('li');
+        listElement.textContent = newTask._description;
+        tasksList.appendChild(listElement);
+        console.log(this.currentProject);
     }
 
     openProjectModal() {

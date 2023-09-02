@@ -26,4 +26,12 @@ export class Project {
     get tasks() {
         return this._tasks
     }
+
+    totalTasks() {
+        return this._tasks.length
+    }
+
+    addTask(task) {
+        this._tasks.push(task);
+    }
 }
