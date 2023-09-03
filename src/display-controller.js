@@ -109,7 +109,7 @@ export class DisplayController {
     deleteTask(task) {
         const index = this.currentProject.getTaskIndex(task);
         this.currentProject.removeTaskAtIndex(index);
-        const tasksList = document.querySelector('section#tasks > ul');
+        const tasksList = this.getTasksList();
         tasksList.children.item(index).remove();
     }
 
@@ -140,7 +140,7 @@ export class DisplayController {
 
     // wipes all tasks from the current projects tasks list
     clearTasksList() {
-        const tasksList = document.querySelector('section#tasks > ul');
+        const tasksList = this.getTasksList();
         while (tasksList.firstChild) {
             tasksList.removeChild(tasksList.lastChild);
         }
@@ -148,11 +148,12 @@ export class DisplayController {
 
     // takes a task as an arg and appends it to the current project's tasks display
     appendTaskToDOM(task) {
-        const tasksList = document.querySelector('section#tasks > ul');
+        const tasksList = this.getTasksList();
         const listElement = document.createElement('li');
         
         const textWrapper = document.createElement('span');
         textWrapper.innerHTML = task.description;
+
         const editBtn = document.createElement('button');
         editBtn.textContent = 'edit';
         
@@ -191,5 +192,10 @@ export class DisplayController {
 
     closeModal() {
         this.style.display = 'none';
+    }
+
+    // queries the current project's tasks list element and returns it
+    getTasksList() {
+        return document.querySelector('ul#tasks-list'); 
     }
 }
