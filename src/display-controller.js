@@ -105,14 +105,6 @@ export class DisplayController {
         }).bind(this))
     }
 
-    // remove a task from the current project object and the project's display
-    deleteTask(task) {
-        const index = this.currentProject.getTaskIndex(task);
-        this.currentProject.removeTaskAtIndex(index);
-        const tasksList = this.getTasksList();
-        tasksList.children.item(index).remove();
-    }
-
     // initializes all listeners for buttons that are present on page load
     initListeners() {
         const modals = document.querySelectorAll('.modal');
@@ -156,6 +148,7 @@ export class DisplayController {
 
         const editBtn = document.createElement('button');
         editBtn.textContent = 'edit';
+        editBtn.addEventListener('click', this.editTask.bind(this, task));
         
         const deleteBtn = document.createElement('button');
         deleteBtn.textContent = 'delete';
@@ -175,6 +168,39 @@ export class DisplayController {
         
         this.currentProject.addTask(task);
         this.appendTaskToDOM(task);
+    }
+
+    // remove a task from the current project object and the project's display
+    deleteTask(task) {
+        const index = this.currentProject.getTaskIndex(task);
+        this.currentProject.removeTaskAtIndex(index);
+        const tasksList = this.getTasksList();
+        tasksList.children.item(index).remove();
+    }
+
+    // allows a task description to be edited
+    editTask(task) {
+        const index = this.currentProject.getTaskIndex(task);
+        const tasksList = this.getTasksList();
+        let listItem = tasksList.children.item(index);
+        let ele = listItem.querySelector('span');
+        let text = ele.textContent;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = text;
+        input.onblur = (function() {
+            listItem = tasksList.children.item(index);
+            text = input.value;
+            const spanEle = document.createElement('span');
+            spanEle.textContent = text;
+            listItem.replaceChild(spanEle, input);
+            this.currentProject.updateTaskDescription(index, text);
+            console.log(this.currentProject);
+        }).bind(this);
+
+        listItem.replaceChild(input, ele);
+        input.focus();  
     }
 
     // adds all of the current project tasks to the tasks display via the helper method

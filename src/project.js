@@ -42,4 +42,8 @@ export class Project {
     removeTaskAtIndex(index) {
         this._tasks.splice(index, 1);
     }
+
+    updateTaskDescription(index, text) {
+        this._tasks[index].description = text;
+    }
 }

@@ -6,4 +6,8 @@ export class Task {
     get description() {
         return this._description
     }
+
+    set description(text) {
+        this._description = text;
+    }
 }
