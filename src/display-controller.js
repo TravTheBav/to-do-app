@@ -111,7 +111,6 @@ export class DisplayController {
         this.currentProject.removeTaskAtIndex(index);
         const tasksList = document.querySelector('section#tasks > ul');
         tasksList.children.item(index).remove();
-        console.log(this.currentProject.tasks);
     }
 
     // initializes all listeners for buttons that are present on page load
@@ -139,31 +138,6 @@ export class DisplayController {
         this.projectsContainer.appendChild(listWrapper);
     }
 
-    // adds a new task to the current project
-    addTask() {
-        const totalTasks = this.currentProject.totalTasks();
-        const newTask = new Task(`task-${totalTasks + 1}`);
-        
-        this.currentProject.addTask(newTask);
-
-        const tasksList = document.querySelector('section#tasks > ul');
-        const listElement = document.createElement('li');
-        
-        const textWrapper = document.createElement('span');
-        textWrapper.innerHTML = newTask.description;
-        const editBtn = document.createElement('button');
-        editBtn.textContent = 'edit';
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'delete';
-        deleteBtn.addEventListener('click', this.deleteTask.bind(this, newTask));
-
-        [textWrapper, editBtn, deleteBtn].forEach( (ele) => {
-            listElement.appendChild(ele);
-        })
-        tasksList.appendChild(listElement);
-    }
-
     // wipes all tasks from the current projects tasks list
     clearTasksList() {
         const tasksList = document.querySelector('section#tasks > ul');
@@ -172,27 +146,41 @@ export class DisplayController {
         }
     }
 
-    // adds all of the current project tasks to the tasks display
+    // takes a task as an arg and appends it to the current project's tasks display
+    appendTaskToDOM(task) {
+        const tasksList = document.querySelector('section#tasks > ul');
+        const listElement = document.createElement('li');
+        
+        const textWrapper = document.createElement('span');
+        textWrapper.innerHTML = task.description;
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'edit';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'delete';
+        deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
+
+        [textWrapper, editBtn, deleteBtn].forEach( (ele) => {
+            listElement.appendChild(ele);
+        })
+        tasksList.appendChild(listElement);
+    }
+
+    // adds a new task to the current project and appends it to the DOM via the helper method
+    // appendTaskToDOM()
+    addTask() {
+        const totalTasks = this.currentProject.totalTasks();
+        const task = new Task(`task-${totalTasks + 1}`);
+        
+        this.currentProject.addTask(task);
+        this.appendTaskToDOM(task);
+    }
+
+    // adds all of the current project tasks to the tasks display via the helper method
+    // appendTaskToDOM()
     populateProjectTasks() {
         for (let i = 0; i < this.currentProject.totalTasks(); i++) {
-            let task = this.currentProject.tasks[i];
-
-            const tasksList = document.querySelector('section#tasks > ul');
-            const listElement = document.createElement('li');
-        
-            const textWrapper = document.createElement('span');
-            textWrapper.innerHTML = task.description;
-            const editBtn = document.createElement('button');
-            editBtn.textContent = 'edit';
-        
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = 'delete';
-            deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
-
-            [textWrapper, editBtn, deleteBtn].forEach( (ele) => {
-                listElement.appendChild(ele);
-            })
-            tasksList.appendChild(listElement);
+            this.appendTaskToDOM(this.currentProject.tasks[i]);
         }
     }
 
