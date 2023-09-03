@@ -56,7 +56,7 @@ export class DisplayController {
     // sets the event listener for the new project button
     initNewProjectListener() {
         const newProjectBtn = document.getElementById('new-project');
-        newProjectBtn.addEventListener('click', this.openProjectModal.bind(this));
+        newProjectBtn.addEventListener('click', this.openModal.bind(this));
     }
 
     // sets the event listener for the create project button
@@ -77,17 +77,7 @@ export class DisplayController {
         closeBtn.addEventListener('click', this.closeModal.bind(closeBtn.parentElement))
     }
 
-    // initializes all listeners
-    initListeners() {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach( (modal) => {
-            this.initCloseModalListener(modal);
-        })
-        this.initNewProjectListener();
-        this.initCreateProjectListener();
-        this.initAddTaskListener();    
-    }
-
+    // sets event listener for a project link or tab
     initProjectLinkListener(projectLink) {
         projectLink.addEventListener('click', (function (event) {
             this.currentProject = this.projectsController.findProjectByTitle(projectLink.textContent);
@@ -105,11 +95,35 @@ export class DisplayController {
             const priority = projectCard.querySelector('#priority');
             priority.textContent = this.currentProject.priority;
 
+            // repopulate tasks
+            this.clearTasksList();
+            this.populateProjectTasks();
+
             if (window.getComputedStyle(projectCard).display == 'none') { projectCard.style.display = 'block'; }
             
             event.preventDefault();
         }).bind(this))
     }
+
+    // remove a task from the current project object and the project's display
+    deleteTask(task) {
+        const index = this.currentProject.getTaskIndex(task);
+        this.currentProject.removeTaskAtIndex(index);
+        const tasksList = document.querySelector('section#tasks > ul');
+        tasksList.children.item(index).remove();
+        console.log(this.currentProject.tasks);
+    }
+
+    // initializes all listeners for buttons that are present on page load
+    initListeners() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach( (modal) => {
+            this.initCloseModalListener(modal);
+        })
+        this.initNewProjectListener();
+        this.initCreateProjectListener();
+        this.initAddTaskListener();
+    }    
 
     // adds a project to the sidebar display
     addProject(project) {
@@ -129,15 +143,60 @@ export class DisplayController {
     addTask() {
         const totalTasks = this.currentProject.totalTasks();
         const newTask = new Task(`task-${totalTasks + 1}`);
-        const tasksList = document.querySelector('section#tasks > ul');
+        
         this.currentProject.addTask(newTask);
+
+        const tasksList = document.querySelector('section#tasks > ul');
         const listElement = document.createElement('li');
-        listElement.textContent = newTask._description;
+        
+        const textWrapper = document.createElement('span');
+        textWrapper.innerHTML = newTask.description;
+        const editBtn = document.createElement('button');
+        editBtn.textContent = 'edit';
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'delete';
+        deleteBtn.addEventListener('click', this.deleteTask.bind(this, newTask));
+
+        [textWrapper, editBtn, deleteBtn].forEach( (ele) => {
+            listElement.appendChild(ele);
+        })
         tasksList.appendChild(listElement);
-        console.log(this.currentProject);
     }
 
-    openProjectModal() {
+    // wipes all tasks from the current projects tasks list
+    clearTasksList() {
+        const tasksList = document.querySelector('section#tasks > ul');
+        while (tasksList.firstChild) {
+            tasksList.removeChild(tasksList.lastChild);
+        }
+    }
+
+    // adds all of the current project tasks to the tasks display
+    populateProjectTasks() {
+        for (let i = 0; i < this.currentProject.totalTasks(); i++) {
+            let task = this.currentProject.tasks[i];
+
+            const tasksList = document.querySelector('section#tasks > ul');
+            const listElement = document.createElement('li');
+        
+            const textWrapper = document.createElement('span');
+            textWrapper.innerHTML = task.description;
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'edit';
+        
+            const deleteBtn = document.createElement('button');
+            deleteBtn.textContent = 'delete';
+            deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
+
+            [textWrapper, editBtn, deleteBtn].forEach( (ele) => {
+                listElement.appendChild(ele);
+            })
+            tasksList.appendChild(listElement);
+        }
+    }
+
+    openModal() {
         const modal = document.querySelector('.modal');
         modal.style.display = 'block';
     }

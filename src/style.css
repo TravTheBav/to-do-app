@@ -155,3 +155,7 @@ form > * {
 .tasks-header > h2 {
     margin: 0px;
 }
+
+#tasks > ul > li > * {
+    margin: 0px 1rem 1rem 0px;
+}

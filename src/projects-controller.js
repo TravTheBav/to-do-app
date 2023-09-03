@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export class ProjectsController {
     constructor() {
         this._projects = []
