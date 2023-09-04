@@ -18,7 +18,7 @@ function formatTimeString(dateObject) {
         amOrPm = 'AM';
     }
     hours = String(hours);
-    minutes = String(minutes);
+    minutes = String(minutes).padStart(2, '0');
 
     const output = format(dateObject, `MM/dd/yyyy, '${hours}':'${minutes}' '${amOrPm}'`);
     return output;
