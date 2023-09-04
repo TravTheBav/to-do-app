@@ -189,6 +189,7 @@ export class DisplayController {
         const input = document.createElement('input');
         input.type = 'text';
         input.value = text;
+        
         input.onblur = (function() {
             listItem = tasksList.children.item(index);
             text = input.value;
@@ -196,8 +197,13 @@ export class DisplayController {
             spanEle.textContent = text;
             listItem.replaceChild(spanEle, input);
             this.currentProject.updateTaskDescription(index, text);
-            console.log(this.currentProject);
         }).bind(this);
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key == "Enter") {
+                input.blur();
+            };
+        });
 
         listItem.replaceChild(input, ele);
         input.focus();  
