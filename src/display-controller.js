@@ -15,28 +15,41 @@ export class DisplayController {
         const form = document.querySelector('form#project-form');
         const modal = document.querySelector('.modal');
 
-        const title = form.querySelector('input#title').value;
-        const description = form.querySelector('textarea#description').value;
-        
-        const dt = new Date(form.querySelector('input#due-date').value);        
-        const dateTime = formatTimeString(dt);
+        const title = form.querySelector('input#title');
+        const description = form.querySelector('textarea#description');
+        const dateField = form.querySelector('input#due-date'); 
         
         const priorityOptions = document.querySelectorAll('input[name="priority"]');
         let priority;
         priorityOptions.forEach( (field) => {
             if (field.checked) {
-                priority = field.value;
+                priority = field;
             }
         });
 
-        const project = new Project(title, description, dateTime, priority);        
+        let validForm = this.checkFields([title, description, dateField, priority]);
+        if (!validForm) {
+            console.log('invalid form');
+            return;
+        }
+
+        const dt = new Date(dateField.value);        
+        const dateTime = formatTimeString(dt);       
+        const project = new Project(title.value, description.value, dateTime, priority.value);        
         this.projectsController.addProject(project);
         this.addProject(project);
 
         // clear form and close modal afterwards
         this.clearForm(form);
         this.closeModal.bind(modal)();
+        
         event.preventDefault();
+    }
+
+    // checks each form field in the array to see if it is valid
+    checkFields(arr) {
+        const isValid = (field) => field.checkValidity();
+        return arr.every(isValid);
     }
 
     // wipes the new project form fields
