@@ -155,19 +155,26 @@ export class DisplayController {
     appendTaskToDOM(task) {
         const tasksList = this.getTasksList();
         const listElement = document.createElement('li');
-        
-        const textWrapper = document.createElement('span');
-        textWrapper.innerHTML = task.description;
+        listElement.classList.add('task');
 
         const editBtn = document.createElement('button');
-        editBtn.textContent = 'edit';
+        editBtn.classList.add('has-icon');
+        const editBtnIcon = document.createElement('div');
+        editBtnIcon.classList.add('button-icon', 'small-icon', 'edit-task');
+        editBtn.appendChild(editBtnIcon);
         editBtn.addEventListener('click', this.editTask.bind(this, task));
         
         const deleteBtn = document.createElement('button');
-        deleteBtn.textContent = 'delete';
+        deleteBtn.classList.add('has-icon');
+        const deleteBtnIcon = document.createElement('div');
+        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-task');
+        deleteBtn.appendChild(deleteBtnIcon);
         deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
 
-        [textWrapper, editBtn, deleteBtn].forEach( (ele) => {
+        const textWrapper = document.createElement('span');
+        textWrapper.innerHTML = task.description;
+
+        [editBtn, deleteBtn, textWrapper].forEach( (ele) => {
             listElement.appendChild(ele);
         })
         tasksList.appendChild(listElement);
