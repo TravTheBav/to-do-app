@@ -90,6 +90,16 @@ button.has-icon > .button-icon {
     mask-image: url('./icons/plus-circle.svg');
 }
 
+.task-checkbox {
+    -webkit-mask-image: url('./icons/square.svg');
+    mask-image: url('./icons/square.svg');
+}
+
+.checked > .task-checkbox {
+    -webkit-mask-image: url('./icons/check-square.svg');
+    mask-image: url('./icons/check-square.svg');
+}
+
 .edit-task {
     -webkit-mask-image: url('./icons/edit.svg');
     mask-image: url('./icons/edit.svg');
@@ -176,10 +186,15 @@ form > * {
     padding-left: .5rem;
 }
 
+.task:not(:first-child) {
+    border-top: 1px solid beige;
+    padding-top: .5rem;
+}
+
 .task {
     list-style: none;
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
+    gap: .5rem;
     margin-bottom: .5rem;
 }

@@ -157,24 +157,14 @@ export class DisplayController {
         const listElement = document.createElement('li');
         listElement.classList.add('task');
 
-        const editBtn = document.createElement('button');
-        editBtn.classList.add('has-icon');
-        const editBtnIcon = document.createElement('div');
-        editBtnIcon.classList.add('button-icon', 'small-icon', 'edit-task');
-        editBtn.appendChild(editBtnIcon);
-        editBtn.addEventListener('click', this.editTask.bind(this, task));
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('has-icon');
-        const deleteBtnIcon = document.createElement('div');
-        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-task');
-        deleteBtn.appendChild(deleteBtnIcon);
-        deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
+        const checkBox = this.newTaskCheckBox(task);
+        const editBtn = this.newTaskEditButton(task);
+        const deleteBtn = this.newTaskDeleteButton(task);
 
         const textWrapper = document.createElement('span');
         textWrapper.innerHTML = task.description;
 
-        [editBtn, deleteBtn, textWrapper].forEach( (ele) => {
+        [checkBox, editBtn, deleteBtn, textWrapper].forEach( (ele) => {
             listElement.appendChild(ele);
         })
         tasksList.appendChild(listElement);
@@ -229,12 +219,27 @@ export class DisplayController {
         input.focus();  
     }
 
+    // toggles a task checkbox
+    toggleCheckBox() {
+        if (this.classList.contains('checked')) {
+            this.classList.remove('checked');
+        } else {
+            this.classList.add('checked');
+        }
+    }
+
+    // notifies a task when it is checked on the display
+    toggleTaskCheckedStatus(task) {
+        task.toggleChecked();
+    }
+
     // adds all of the current project tasks to the tasks display via the helper method
     // appendTaskToDOM()
     populateProjectTasks() {
         for (let i = 0; i < this.currentProject.totalTasks(); i++) {
             this.appendTaskToDOM(this.currentProject.tasks[i]);
         }
+        console.log(this.currentProject.tasks);
     }
 
     openModal() {
@@ -249,5 +254,42 @@ export class DisplayController {
     // queries the current project's tasks list element and returns it
     getTasksList() {
         return document.querySelector('ul#tasks-list'); 
+    }
+
+    // returns a task checkbox
+    newTaskCheckBox(task) {
+        const checkBox = document.createElement('button');
+        checkBox.classList.add('has-icon');
+        const checkBoxIcon = document.createElement('div');
+        checkBoxIcon.classList.add('button-icon', 'small-icon', 'task-checkbox');
+        if (task.checked) {
+            checkBox.classList.add('checked');
+        }
+        checkBox.appendChild(checkBoxIcon);
+        checkBox.addEventListener('click', this.toggleCheckBox);
+        checkBox.addEventListener('click', this.toggleTaskCheckedStatus.bind(this, task));
+        return checkBox;
+    }
+
+    // returns a task edit button
+    newTaskEditButton(task) {
+        const editBtn = document.createElement('button');
+        editBtn.classList.add('has-icon');
+        const editBtnIcon = document.createElement('div');
+        editBtnIcon.classList.add('button-icon', 'small-icon', 'edit-task');
+        editBtn.appendChild(editBtnIcon);
+        editBtn.addEventListener('click', this.editTask.bind(this, task));
+        return editBtn;
+    }
+
+    // returns a task delete button
+    newTaskDeleteButton(task) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('has-icon');
+        const deleteBtnIcon = document.createElement('div');
+        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-task');
+        deleteBtn.appendChild(deleteBtnIcon);
+        deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
+        return deleteBtn;
     }
 }
