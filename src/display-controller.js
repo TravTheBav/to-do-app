@@ -90,10 +90,22 @@ export class DisplayController {
         deleteCheckedBtn.addEventListener('click', this.deleteCheckedTasks.bind(this));
     }
 
-    // sets close button event listener for a modal
+    // sets close button event listener for the new project modal
     initCloseModalListener(modal) {
         const closeBtn = modal.querySelector('.close');
-        closeBtn.addEventListener('click', this.closeModal.bind(closeBtn.parentElement))
+        closeBtn.addEventListener('click', this.closeModal.bind(closeBtn.parentElement));
+    }
+
+    // sets the close button event listener for the current project display
+    initCloseCurrentProjectListener() {
+        const closeBtn = document.getElementById('close-project');
+        closeBtn.addEventListener('click', this.closeCurrentProject.bind(this));
+    }
+
+    closeCurrentProject() {
+        const currentProjectDisplay = document.querySelector('#current-project');
+        currentProjectDisplay.style.display = 'none';
+        this.currentProject = null;
     }
 
     // sets event listener for a project link or tab
@@ -134,6 +146,7 @@ export class DisplayController {
         this.initCreateProjectListener();
         this.initAddTaskListener();
         this.initDeleteCheckedTasksListener();
+        this.initCloseCurrentProjectListener();
     }    
 
     // adds a project to the sidebar display
@@ -262,6 +275,7 @@ export class DisplayController {
         console.log(this.currentProject.tasks);
     }
 
+    
     openModal() {
         const modal = document.querySelector('.modal');
         modal.style.display = 'block';
