@@ -178,6 +178,12 @@ form > * {
     align-items: center;
 }
 
+.tasks-buttons {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+}
+
 .tasks-header > h2 {
     margin: 0px;
 }

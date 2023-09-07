@@ -84,6 +84,12 @@ export class DisplayController {
         addTaskBtn.addEventListener('click', this.addTask.bind(this));
     }
 
+    // set the event listener for the delete-checked-tasks button
+    initDeleteCheckedTasksListener() {
+        const deleteCheckedBtn = document.getElementById('delete-checked-tasks');
+        deleteCheckedBtn.addEventListener('click', this.deleteCheckedTasks.bind(this));
+    }
+
     // sets close button event listener for a modal
     initCloseModalListener(modal) {
         const closeBtn = modal.querySelector('.close');
@@ -127,6 +133,7 @@ export class DisplayController {
         this.initNewProjectListener();
         this.initCreateProjectListener();
         this.initAddTaskListener();
+        this.initDeleteCheckedTasksListener();
     }    
 
     // adds a project to the sidebar display
@@ -148,6 +155,19 @@ export class DisplayController {
         const tasksList = this.getTasksList();
         while (tasksList.firstChild) {
             tasksList.removeChild(tasksList.lastChild);
+        }
+    }
+
+    // deletes all checked tasks from the current project display and the backend
+    deleteCheckedTasks() {
+        const tasksList = this.getTasksList();
+        for (let i = tasksList.children.length - 1; i >= 0; i--) {
+            let listItem = tasksList.children[i]
+            let checkBox = listItem.querySelector('button.checkbox');
+            if (checkBox.classList.contains('checked')) {
+                let task = this.currentProject.tasks[i]
+                this.deleteTask(task);
+            }
         }
     }
 
@@ -259,7 +279,7 @@ export class DisplayController {
     // returns a task checkbox
     newTaskCheckBox(task) {
         const checkBox = document.createElement('button');
-        checkBox.classList.add('has-icon');
+        checkBox.classList.add('has-icon', 'checkbox');
         const checkBoxIcon = document.createElement('div');
         checkBoxIcon.classList.add('button-icon', 'small-icon', 'task-checkbox');
         if (task.checked) {
