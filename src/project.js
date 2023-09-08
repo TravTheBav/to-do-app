@@ -11,16 +11,32 @@ export class Project {
         return this._title
     }
 
+    set title(title) {
+        this._title = title;
+    }
+
     get description() {
         return this._description
+    }
+
+    set description(description) {
+        this._description = description;
     }
 
     get dueDate() {
         return this._dueDate
     }
 
+    set dueDate(date) {
+        this._dueDate = date;
+    }
+
     get priority() {
         return this._priority
+    }
+
+    set priority(priority) {
+        this._priority = priority;
     }
 
     get tasks() {
