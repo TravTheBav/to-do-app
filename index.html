@@ -25,9 +25,14 @@
             <section id="current-project" class="bg-secondary">
                 <header class="card-header bg-tertiary">
                     <h1 id="title">Current Project</h1>
-                    <button id="close-project" class="has-icon close">
-                        <div class="button-icon medium-icon close-element"></div>
-                    </button>
+                    <div class="buttons-wrapper">
+                        <button id="edit-project" class="has-icon">
+                            <div class="button-icon medium-icon edit-icon"></div>
+                        </button>
+                        <button id="close-project" class="has-icon">
+                            <div class="button-icon medium-icon close-icon"></div>
+                        </button>
+                    </div>
                 </header>
                 <section id="details">
                     <h2>Description</h2>
@@ -41,7 +46,7 @@
                 <section id="tasks">
                     <div class="tasks-header">
                         <h2>Tasks</h2>
-                        <div class="tasks-buttons">
+                        <div class="buttons-wrapper">
                             <button id="add-task" class="has-icon">
                                 <div class="button-icon medium-icon new-task"></div>
                             </button>
@@ -94,6 +99,7 @@
             </fieldset>
             
             <button type="submit" id="create-project">Create Project</button>
+            <button type="submit" id="update-project" style="display: none;">Update Project</button>
         </form>
     </div>
     <script src="main.js"></script>
