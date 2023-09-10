@@ -1,4 +1,3 @@
-import { create } from 'lodash';
 import { formatTimeString } from './date-time-helpers';
 import { Project } from "./project";
 import { ProjectsController } from "./projects-controller";
@@ -11,14 +10,13 @@ export class DisplayController {
         this.currentProject = null;
     }
 
-    // creates a new project instance and sends addProject method to self and projectsController 
-    createProject(event) {
+    // returns an object containing form fields for a project
+    getProjectFields() {
         const form = document.querySelector('form#project-form');
-        const modal = document.querySelector('.modal');
 
         const title = form.querySelector('input#title');
         const description = form.querySelector('textarea#description');
-        const dateField = form.querySelector('input#due-date'); 
+        const dueDate = form.querySelector('input#due-date');
         
         const priorityOptions = document.querySelectorAll('input[name="priority"]');
         let priority;
@@ -28,15 +26,38 @@ export class DisplayController {
             }
         });
 
-        let validForm = this.checkFields([title, description, dateField, priority]);
+        return {
+            title: title,
+            description: description,
+            dueDate: dueDate,
+            priority: priority
+        };
+    }
+
+    // creates a new project instance and sends addProject method to self and projectsController 
+    createProject(event) {
+        const form = document.querySelector('form#project-form');
+        const modal = document.querySelector('.modal');
+        const fields = this.getProjectFields();
+
+        let validForm = this.checkFields([
+                fields.title,
+                fields.description,
+                fields.dueDate,
+                fields.priority
+            ]);
         if (!validForm) {
-            console.log('invalid form');
             return;
         }
 
-        const dt = new Date(dateField.value);        
+        const dt = new Date(fields.dueDate.value);        
         const dateTime = formatTimeString(dt);       
-        const project = new Project(title.value, description.value, dateTime, priority.value);        
+        const project = new Project(
+            fields.title.value,
+            fields.description.value,
+            dateTime,
+            fields.priority.value
+        );     
         this.projectsController.addProject(project);
         this.addProject(project);
 
@@ -51,37 +72,31 @@ export class DisplayController {
     updateProject(event) {
         const form = document.querySelector('form#project-form');
         const modal = document.querySelector('.modal');
-
         const oldTitle = this.currentProject.title;
-        const title = form.querySelector('input#title');
-        const description = form.querySelector('textarea#description');
-        const dateField = form.querySelector('input#due-date'); 
-        
-        const priorityOptions = document.querySelectorAll('input[name="priority"]');
-        let priority;
-        priorityOptions.forEach( (field) => {
-            if (field.checked) {
-                priority = field;
-            }
-        });
+        const fields = this.getProjectFields();
 
-        let validForm = this.checkFields([title, description, dateField, priority]);
+        let validForm = this.checkFields([
+            fields.title,
+            fields.description,
+            fields.dueDate,
+            fields.priority
+        ]);
         if (!validForm) {
             console.log('invalid form');
             return;
         }
 
-        const dt = new Date(dateField.value);        
+        const dt = new Date(fields.dueDate.value);        
         const dateTime = formatTimeString(dt);
 
         // before updating the project, find the project link and update its text to the new title
         let projectLink = this.getProjectLink(oldTitle);
-        projectLink.textContent = title.value;
+        projectLink.textContent = fields.title.value;
         
-        this.currentProject.title = title.value;
-        this.currentProject.description = description.value;
+        this.currentProject.title = fields.title.value;
+        this.currentProject.description = fields.description.value;
         this.currentProject.dueDate = dateTime;
-        this.currentProject.priority = priority.value;
+        this.currentProject.priority = fields.priority.value;
 
         // clear form and close modal afterwards
         this.clearForm(form);
