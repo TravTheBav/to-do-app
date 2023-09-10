@@ -10,34 +10,23 @@ export class DisplayController {
         this.currentProject = null;
     }
 
-    // returns an object containing form fields for a project
-    getProjectFields() {
-        const form = document.querySelector('form#project-form');
+// methods for manipulating projects
 
-        const title = form.querySelector('input#title');
-        const description = form.querySelector('textarea#description');
-        const dueDate = form.querySelector('input#due-date');
-        
-        const priorityOptions = document.querySelectorAll('input[name="priority"]');
-        let priority;
-        priorityOptions.forEach( (field) => {
-            if (field.checked) {
-                priority = field;
-            }
-        });
+    // opens up the project form in new mode
+    newProject() {
+        this.setProjectFormMode('new');
+        this.openModal();
+    }
 
-        return {
-            title: title,
-            description: description,
-            dueDate: dueDate,
-            priority: priority
-        };
+    // opens up the project form in edit mode
+    editProject() {
+        this.setProjectFormMode('edit');
+        this.fillFormFields();
+        this.openModal();
     }
 
     // creates a new project instance and sends addProject method to self and projectsController 
     createProject(event) {
-        const form = document.querySelector('form#project-form');
-        const modal = document.querySelector('.modal');
         const fields = this.getProjectFields();
 
         let validForm = this.checkFields([
@@ -61,17 +50,13 @@ export class DisplayController {
         this.projectsController.addProject(project);
         this.addProject(project);
 
-        // clear form and close modal afterwards
-        this.clearForm(form);
-        this.closeModal.bind(modal)();
-        
+        // close modal afterwards        
+        this.closeModal();        
         event.preventDefault();
     }
 
     // updates the current project
     updateProject(event) {
-        const form = document.querySelector('form#project-form');
-        const modal = document.querySelector('.modal');
         const oldTitle = this.currentProject.title;
         const fields = this.getProjectFields();
 
@@ -98,13 +83,11 @@ export class DisplayController {
         this.currentProject.dueDate = dateTime;
         this.currentProject.priority = fields.priority.value;
 
-        // clear form and close modal afterwards
-        this.clearForm(form);
-        this.closeModal.bind(modal)();
+        // close modal afterwards
+        this.closeModal();
 
         // simulate a project link click so that the project display updates
-        projectLink.click();
-        
+        projectLink.click();        
         event.preventDefault();
     }
 
@@ -116,146 +99,6 @@ export class DisplayController {
                 return listItems[i].firstChild;
             }
         }
-    }
-
-    // checks each form field in the array to see if it is valid
-    checkFields(arr) {
-        const isValid = (field) => field.checkValidity();
-        return arr.every(isValid);
-    }
-
-    // wipes the new project form fields
-    clearForm(form) {
-        const inputs = form.querySelectorAll('input, textarea');
-        inputs.forEach((input) => {
-            if (input.type == 'radio') {
-                if (input.value == 'low') {
-                    input.checked = true;  // reset priority to low
-                }
-            }   else {
-                input.value = null;
-            }
-        })
-    }
-
-    // sets the event listener for the new project button
-    initNewProjectListener() {
-        const newProjectBtn = document.getElementById('new-project');
-        newProjectBtn.addEventListener('click', this.newProject.bind(this));
-    }
-
-    // sets the event listener for the create project button
-    initCreateProjectListener() {
-        const createProjectBtn = document.getElementById('create-project');
-        createProjectBtn.addEventListener('click', this.createProject.bind(this));
-    }
-
-    // sets the event listener for the edit project button
-    initEditProjectListener() {
-        const editProjectBtn = document.getElementById('edit-project');
-        editProjectBtn.addEventListener('click', this.editProject.bind(this));
-    }
-
-    // sets the event listener for the update project button
-    initUpdateProjectListener() {
-        const updateProjectBtn = document.getElementById('update-project');
-        updateProjectBtn.addEventListener('click', this.updateProject.bind(this));
-    }
-
-    // opens up the project form in new mode
-    newProject() {
-        this.setProjectFormMode('new');
-        this.openModal();
-    }
-
-    // opens up the project form in edit mode
-    editProject() {
-        this.setProjectFormMode('edit');
-        this.openModal();
-    }
-
-    // sets the project form to the appropriate mode i.e. - create or update
-    setProjectFormMode(mode) {
-        let header = document.getElementById('modal-header');
-        const createProjectBtn = document.querySelector('button#create-project');
-        const updateProjectBtn = document.querySelector('button#update-project');
-        
-        if (mode == 'new') {
-            header.textContent = 'New Project';
-            createProjectBtn.style.display = 'block';
-            updateProjectBtn.style.display = 'none';
-        } else if (mode == 'edit') {
-            header.textContent = 'Edit Project';
-            updateProjectBtn.style.display = 'block';
-            createProjectBtn.style.display = 'none';
-        }
-    }
-
-    // set the event listener for the add task button
-    initAddTaskListener() {
-        const addTaskBtn = document.getElementById('add-task');
-        addTaskBtn.addEventListener('click', this.addTask.bind(this));
-    }
-
-    // set the event listener for the delete-checked-tasks button
-    initDeleteCheckedTasksListener() {
-        const deleteCheckedBtn = document.getElementById('delete-checked-tasks');
-        deleteCheckedBtn.addEventListener('click', this.deleteCheckedTasks.bind(this));
-    }
-
-    // sets close button event listener for the new project modal
-    initCloseModalListener(modal) {
-        const closeBtn = modal.querySelector('.close');
-        closeBtn.addEventListener('click', this.closeModal.bind(closeBtn.parentElement));
-    }
-
-    // sets the close button event listener for the current project display
-    initCloseCurrentProjectListener() {
-        const closeBtn = document.getElementById('close-project');
-        closeBtn.addEventListener('click', this.closeCurrentProject.bind(this));
-    }
-
-    // sets event listener for a project link or tab
-    initProjectLinkListener(projectLink) {
-        projectLink.addEventListener('click', (function (event) {
-            this.currentProject = this.projectsController.findProjectByTitle(projectLink.textContent);
-            const projectCard = document.getElementById('current-project');
-
-            const title = projectCard.querySelector('#title');
-            title.textContent = this.currentProject.title;
-
-            const description = projectCard.querySelector('#description');
-            description.textContent = this.currentProject.description;
-
-            const dueDate = projectCard.querySelector('#due-date');
-            dueDate.textContent = this.currentProject.dueDate;
-
-            const priority = projectCard.querySelector('#priority');
-            priority.textContent = this.currentProject.priority;
-
-            // repopulate tasks
-            this.clearTasksList();
-            this.populateProjectTasks();
-
-            if (window.getComputedStyle(projectCard).display == 'none') { projectCard.style.display = 'block'; }
-            
-            event.preventDefault();
-        }).bind(this))
-    }
-
-    // initializes all listeners for buttons that are present on page load
-    initListeners() {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach( (modal) => {
-            this.initCloseModalListener(modal);
-        })
-        this.initNewProjectListener();
-        this.initCreateProjectListener();
-        this.initAddTaskListener();
-        this.initDeleteCheckedTasksListener();
-        this.initCloseCurrentProjectListener();
-        this.initEditProjectListener();
-        this.initUpdateProjectListener();
     }    
 
     // adds a project to the sidebar display
@@ -277,6 +120,50 @@ export class DisplayController {
         const currentProjectDisplay = document.querySelector('#current-project');
         currentProjectDisplay.style.display = 'none';
         this.currentProject = null;
+    }
+
+// methods for manipulating tasks
+
+    // queries the current project's tasks list element and returns it
+    getTasksList() {
+        return document.querySelector('ul#tasks-list'); 
+    }
+
+    // returns a task checkbox
+    newTaskCheckBox(task) {
+        const checkBox = document.createElement('button');
+        checkBox.classList.add('has-icon', 'checkbox');
+        const checkBoxIcon = document.createElement('div');
+        checkBoxIcon.classList.add('button-icon', 'small-icon', 'task-checkbox');
+        if (task.checked) {
+            checkBox.classList.add('checked');
+        }
+        checkBox.appendChild(checkBoxIcon);
+        checkBox.addEventListener('click', this.toggleCheckBox);
+        checkBox.addEventListener('click', this.toggleTaskCheckedStatus.bind(this, task));
+        return checkBox;
+    }
+
+    // returns a task edit button
+    newTaskEditButton(task) {
+        const editBtn = document.createElement('button');
+        editBtn.classList.add('has-icon');
+        const editBtnIcon = document.createElement('div');
+        editBtnIcon.classList.add('button-icon', 'small-icon', 'edit-icon');
+        editBtn.appendChild(editBtnIcon);
+        editBtn.addEventListener('click', this.editTask.bind(this, task));
+        return editBtn;
+    }
+
+    // returns a task delete button
+    newTaskDeleteButton(task) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('has-icon');
+        const deleteBtnIcon = document.createElement('div');
+        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-task');
+        deleteBtn.appendChild(deleteBtnIcon);
+        deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
+        return deleteBtn;
     }
 
     // wipes all tasks from the current projects tasks list
@@ -388,57 +275,184 @@ export class DisplayController {
         for (let i = 0; i < this.currentProject.totalTasks(); i++) {
             this.appendTaskToDOM(this.currentProject.tasks[i]);
         }
-    }
+    }    
 
-    
+// Methods for manipulating the project form
+
+    // open project form
     openModal() {
         const modal = document.querySelector('.modal');
         modal.style.display = 'block';
     }
 
+    // close project form
     closeModal() {
-        this.style.display = 'none';
+        const form = document.querySelector('form#project-form');
+        const modal = document.querySelector('.modal');
+        modal.style.display = 'none';
+        this.clearForm(form);
     }
 
-    // queries the current project's tasks list element and returns it
-    getTasksList() {
-        return document.querySelector('ul#tasks-list'); 
+    // wipes the new project form fields
+    clearForm(form) {
+        const inputs = form.querySelectorAll('input, textarea');
+        inputs.forEach((input) => {
+            if (input.type == 'radio') {
+                if (input.value == 'low') {
+                    input.checked = true;  // reset priority to low
+                }
+            }   else {
+                input.value = null;
+            }
+        })
     }
 
-    // returns a task checkbox
-    newTaskCheckBox(task) {
-        const checkBox = document.createElement('button');
-        checkBox.classList.add('has-icon', 'checkbox');
-        const checkBoxIcon = document.createElement('div');
-        checkBoxIcon.classList.add('button-icon', 'small-icon', 'task-checkbox');
-        if (task.checked) {
-            checkBox.classList.add('checked');
+    // returns an object containing form fields for a project
+    getProjectFields() {
+        const form = document.querySelector('form#project-form');
+
+        const title = form.querySelector('input#title');
+        const description = form.querySelector('textarea#description');
+        const dueDate = form.querySelector('input#due-date');
+        
+        const priorityOptions = document.querySelectorAll('input[name="priority"]');
+        let priority;
+        priorityOptions.forEach( (field) => {
+            if (field.checked) {
+                priority = field;
+            }
+        });
+
+        return {
+            title: title,
+            description: description,
+            dueDate: dueDate,
+            priority: priority
+        };
+    }
+
+    // checks each form field in the array to see if it is valid
+    checkFields(arr) {
+        const isValid = (field) => field.checkValidity();
+        return arr.every(isValid);
+    }
+
+    // fills the form with some current project data
+    fillFormFields() {
+        const form = document.querySelector('form#project-form');
+        const title = form.querySelector('input#title');
+        const description = form.querySelector('textarea#description');
+        title.value = this.currentProject.title;
+        description.value = this.currentProject.description;
+    }
+
+    // sets the project form to the appropriate mode i.e. - create or update
+    setProjectFormMode(mode) {
+        let header = document.getElementById('modal-header');
+        const createProjectBtn = document.querySelector('button#create-project');
+        const updateProjectBtn = document.querySelector('button#update-project');
+        
+        if (mode == 'new') {
+            header.textContent = 'New Project';
+            createProjectBtn.style.display = 'block';
+            updateProjectBtn.style.display = 'none';
+        } else if (mode == 'edit') {
+            header.textContent = 'Edit Project';
+            updateProjectBtn.style.display = 'block';
+            createProjectBtn.style.display = 'none';
         }
-        checkBox.appendChild(checkBoxIcon);
-        checkBox.addEventListener('click', this.toggleCheckBox);
-        checkBox.addEventListener('click', this.toggleTaskCheckedStatus.bind(this, task));
-        return checkBox;
     }
 
-    // returns a task edit button
-    newTaskEditButton(task) {
-        const editBtn = document.createElement('button');
-        editBtn.classList.add('has-icon');
-        const editBtnIcon = document.createElement('div');
-        editBtnIcon.classList.add('button-icon', 'small-icon', 'edit-icon');
-        editBtn.appendChild(editBtnIcon);
-        editBtn.addEventListener('click', this.editTask.bind(this, task));
-        return editBtn;
+// Button initializers
+
+    // sets the event listener for the new project button
+    initNewProjectListener() {
+        const newProjectBtn = document.getElementById('new-project');
+        newProjectBtn.addEventListener('click', this.newProject.bind(this));
     }
 
-    // returns a task delete button
-    newTaskDeleteButton(task) {
-        const deleteBtn = document.createElement('button');
-        deleteBtn.classList.add('has-icon');
-        const deleteBtnIcon = document.createElement('div');
-        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-task');
-        deleteBtn.appendChild(deleteBtnIcon);
-        deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
-        return deleteBtn;
+    // sets the event listener for the create project button
+    initCreateProjectListener() {
+        const createProjectBtn = document.getElementById('create-project');
+        createProjectBtn.addEventListener('click', this.createProject.bind(this));
+    }
+
+    // sets the event listener for the edit project button
+    initEditProjectListener() {
+        const editProjectBtn = document.getElementById('edit-project');
+        editProjectBtn.addEventListener('click', this.editProject.bind(this));
+    }
+
+    // sets the event listener for the update project button
+    initUpdateProjectListener() {
+        const updateProjectBtn = document.getElementById('update-project');
+        updateProjectBtn.addEventListener('click', this.updateProject.bind(this));
+    }
+
+    // set the event listener for the add task button
+    initAddTaskListener() {
+        const addTaskBtn = document.getElementById('add-task');
+        addTaskBtn.addEventListener('click', this.addTask.bind(this));
+    }
+
+    // set the event listener for the delete-checked-tasks button
+    initDeleteCheckedTasksListener() {
+        const deleteCheckedBtn = document.getElementById('delete-checked-tasks');
+        deleteCheckedBtn.addEventListener('click', this.deleteCheckedTasks.bind(this));
+    }
+
+    // sets close button event listener for the new project modal
+    initCloseModalListener(modal) {
+        const closeBtn = modal.querySelector('.close');
+        closeBtn.addEventListener('click', this.closeModal.bind(this));
+    }
+
+    // sets the close button event listener for the current project display
+    initCloseCurrentProjectListener() {
+        const closeBtn = document.getElementById('close-project');
+        closeBtn.addEventListener('click', this.closeCurrentProject.bind(this));
+    }
+
+    // sets event listener for a project link or tab
+    initProjectLinkListener(projectLink) {
+        projectLink.addEventListener('click', (function (event) {
+            this.currentProject = this.projectsController.findProjectByTitle(projectLink.textContent);
+            const projectCard = document.getElementById('current-project');
+
+            const title = projectCard.querySelector('#title');
+            title.textContent = this.currentProject.title;
+
+            const description = projectCard.querySelector('#description');
+            description.textContent = this.currentProject.description;
+
+            const dueDate = projectCard.querySelector('#due-date');
+            dueDate.textContent = this.currentProject.dueDate;
+
+            const priority = projectCard.querySelector('#priority');
+            priority.textContent = this.currentProject.priority;
+
+            // repopulate tasks
+            this.clearTasksList();
+            this.populateProjectTasks();
+
+            if (window.getComputedStyle(projectCard).display == 'none') { projectCard.style.display = 'block'; }
+            
+            event.preventDefault();
+        }).bind(this))
+    }
+
+    // initializes all listeners for buttons that are present on page load
+    initListeners() {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach( (modal) => {
+            this.initCloseModalListener(modal);
+        })
+        this.initNewProjectListener();
+        this.initCreateProjectListener();
+        this.initAddTaskListener();
+        this.initDeleteCheckedTasksListener();
+        this.initCloseCurrentProjectListener();
+        this.initEditProjectListener();
+        this.initUpdateProjectListener();
     }
 }
