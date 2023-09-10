@@ -25,6 +25,22 @@ export class DisplayController {
         this.openModal();
     }
 
+    // deletes current project
+    deleteProject() {
+        const text = "Are you sure?";
+        if (confirm(text) == true) {
+            const index = this.projectsController.projectIndex(this.currentProject);
+            this.deleteProjectLink(index);
+            this.projectsController.deleteProject(this.currentProject);      
+            this.closeCurrentProject();
+        }
+    }
+
+    // remove project link from the DOM
+    deleteProjectLink(index) {
+        this.projectsContainer.children.item(index).remove();
+    }
+
     // creates a new project instance and sends addProject method to self and projectsController 
     createProject(event) {
         const fields = this.getProjectFields();
@@ -160,7 +176,7 @@ export class DisplayController {
         const deleteBtn = document.createElement('button');
         deleteBtn.classList.add('has-icon');
         const deleteBtnIcon = document.createElement('div');
-        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-task');
+        deleteBtnIcon.classList.add('button-icon', 'small-icon', 'delete-icon');
         deleteBtn.appendChild(deleteBtnIcon);
         deleteBtn.addEventListener('click', this.deleteTask.bind(this, task));
         return deleteBtn;
@@ -383,19 +399,25 @@ export class DisplayController {
         editProjectBtn.addEventListener('click', this.editProject.bind(this));
     }
 
+    // sets the event listener for the delete project button
+    initDeleteProjectListener() {
+        const deleteProjectBtn = document.getElementById('delete-project');
+        deleteProjectBtn.addEventListener('click', this.deleteProject.bind(this));
+    }
+
     // sets the event listener for the update project button
     initUpdateProjectListener() {
         const updateProjectBtn = document.getElementById('update-project');
         updateProjectBtn.addEventListener('click', this.updateProject.bind(this));
     }
 
-    // set the event listener for the add task button
+    // sets the event listener for the add task button
     initAddTaskListener() {
         const addTaskBtn = document.getElementById('add-task');
         addTaskBtn.addEventListener('click', this.addTask.bind(this));
     }
 
-    // set the event listener for the delete-checked-tasks button
+    // sets the event listener for the delete-checked-tasks button
     initDeleteCheckedTasksListener() {
         const deleteCheckedBtn = document.getElementById('delete-checked-tasks');
         deleteCheckedBtn.addEventListener('click', this.deleteCheckedTasks.bind(this));
@@ -454,5 +476,6 @@ export class DisplayController {
         this.initCloseCurrentProjectListener();
         this.initEditProjectListener();
         this.initUpdateProjectListener();
+        this.initDeleteProjectListener()
     }
 }

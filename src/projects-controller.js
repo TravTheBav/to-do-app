@@ -11,8 +11,13 @@ export class ProjectsController {
         this.projects.push(project);
     }
 
+    projectIndex(project) {
+        const index = this.projects.indexOf(project);
+        return index;
+    }
+
     deleteProject(project) {
-        let index = this.projects.indexOf(project);
+        const index = this.projectIndex(project);
         this.projects.splice(index, 1);
     }
 
