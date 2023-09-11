@@ -66,6 +66,19 @@ main {
     align-items: center;
 }
 
+section#projects > h2 {
+    margin-left: .8em;
+}
+
+section#projects > ul {
+    padding-left: 0px;
+}
+
+section#projects > ul li {
+    list-style: none;
+    padding: 0.5em 2em;
+}
+
 button.has-icon {
     background-color: transparent;
     border: none;
@@ -127,10 +140,6 @@ button.has-icon > .button-icon {
     height: 2rem;
     -webkit-mask-size: 2rem 2rem;
     mask-size: 2rem 2rem;
-}
-
-nav {
-    padding: 1rem;
 }
 
 .modal {
@@ -259,5 +268,9 @@ form > * {
 
     .btn-primary:active {
         background-color: #0160ae;
+    }
+
+    section#projects > ul li:hover {
+        background-color: #454545;
     }
 }

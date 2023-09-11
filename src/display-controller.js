@@ -131,16 +131,16 @@ export class DisplayController {
 
     // adds a project to the sidebar display
     addProject(project) {
-        const listWrapper = document.createElement('li');
+        const listItem = document.createElement('li');
         const projectLink = document.createElement('a');
         projectLink.classList.add('project-link');
         projectLink.href = "";
-        projectLink.innerHTML = project.title;
+        listItem.innerHTML = project.title;
 
         this.initProjectLinkListener(projectLink);
 
-        listWrapper.appendChild(projectLink);
-        this.projectsContainer.appendChild(listWrapper);
+        projectLink.appendChild(listItem);
+        this.projectsContainer.appendChild(projectLink);
     }
 
     // closes current project display
