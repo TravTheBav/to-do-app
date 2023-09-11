@@ -136,12 +136,30 @@ nav {
 .modal {
     display: none;
     position: fixed;
-    background-color: rgb(59, 59, 74);
+    background-color: rgb(63, 60, 73);
     padding: 1rem 3rem;
     z-index: 1;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.form-control > input, .form-control textarea {
+    margin-top: 6px;
+    min-width: 100%;
+    background-color: #26252d;
+    color: beige;
+    border: none;
+    border-radius: 5px;
+    padding: .4rem;
+}
+
+input#due-date {
+    color-scheme: dark;
+}
+
+label, legend {
+    font-size: 1.3rem;
 }
 
 button.close {
@@ -216,4 +234,12 @@ form > * {
     align-items: flex-start;
     gap: .5rem;
     margin-bottom: .5rem;
+}
+
+.btn-primary {
+    background-color: #2196F3;
+    color: white;
+    padding: 0.6em 1.1em;
+    border: none;
+    border-radius: 5px;
 }
