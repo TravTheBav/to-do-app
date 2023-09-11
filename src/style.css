@@ -251,5 +251,13 @@ form > * {
 
     button.has-icon > .button-icon.close-icon:hover {
         background-color: red;
-    }    
+    }
+
+    .btn-primary:hover {
+        background-color: #48aafb;
+    }
+
+    .btn-primary:active {
+        background-color: #0160ae;
+    }
 }
