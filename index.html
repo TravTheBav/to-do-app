@@ -17,7 +17,7 @@
         </header>
         <nav class="bg-tertiary">
             <section id="projects">
-                <h3>Projects</h3>
+                <h2>Projects</h2>
                 <ul></ul>
             </section>
         </nav>
@@ -64,7 +64,9 @@
         </main>
     </div>
     <div class="modal">
-        <button class="close">X</button>
+        <button id="delete-checked-tasks" class="has-icon close">
+            <div class="button-icon medium-icon close-icon"></div>
+        </button>
         <h1 id="modal-header">New Project</h1>
         <form id="project-form">
             <div class="form-control">
@@ -101,8 +103,8 @@
                 </div>
             </fieldset>
             
-            <button type="submit" id="create-project">Create Project</button>
-            <button type="submit" id="update-project" style="display: none;">Update Project</button>
+            <button type="submit" id="create-project" class="btn-primary">Create Project</button>
+            <button type="submit" id="update-project" class="btn-primary" style="display: none;">Update Project</button>
         </form>
     </div>
     <script src="main.js"></script>
