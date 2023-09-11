@@ -25,4 +25,10 @@ export class ProjectsController {
         const project = _.find(this._projects, function (p) { return p.title == title });
         return project;
     }
+
+    titleExists(title) {
+        const fn = function (project) { return project.title == title }
+        const result = this._projects.some(fn);
+        return result;
+    }
 }

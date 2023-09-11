@@ -54,20 +54,26 @@ export class DisplayController {
         if (!validForm) {
             return;
         }
-
-        const dt = new Date(fields.dueDate.value);        
-        const dateTime = formatTimeString(dt);       
-        const project = new Project(
-            fields.title.value,
-            fields.description.value,
-            dateTime,
-            fields.priority.value
-        );     
-        this.projectsController.addProject(project);
-        this.addProject(project);
-
-        // close modal afterwards        
-        this.closeModal();        
+        
+        let validTitle = this.uniqueProjectTitle(fields.title.value);
+        if (!validTitle) {
+            alert("Project title must be unique");
+        } else {
+            const dt = new Date(fields.dueDate.value);
+            const dateTime = formatTimeString(dt);       
+            const project = new Project(
+                fields.title.value,
+                fields.description.value,
+                dateTime,
+                fields.priority.value
+            );     
+            this.projectsController.addProject(project);
+            this.addProject(project);
+    
+            // close modal afterwards
+            this.closeModal();
+        }
+                
         event.preventDefault();
     }
 
@@ -87,23 +93,29 @@ export class DisplayController {
             return;
         }
 
-        const dt = new Date(fields.dueDate.value);        
-        const dateTime = formatTimeString(dt);
+        let validTitle = this.uniqueProjectTitle(fields.title.value);
+        if (fields.title.value != oldTitle && !validTitle) {
+            alert("Project title must be unique");
+        } else {
+            const dt = new Date(fields.dueDate.value);        
+            const dateTime = formatTimeString(dt);
+    
+            // before updating the project, find the project link and update its text to the new title
+            let projectLink = this.getProjectLink(oldTitle);
+            projectLink.textContent = fields.title.value;
+            
+            this.currentProject.title = fields.title.value;
+            this.currentProject.description = fields.description.value;
+            this.currentProject.dueDate = dateTime;
+            this.currentProject.priority = fields.priority.value;
+    
+            // close modal afterwards
+            this.closeModal();
+    
+            // simulate a project link click so that the project display updates
+            projectLink.click();
+        }
 
-        // before updating the project, find the project link and update its text to the new title
-        let projectLink = this.getProjectLink(oldTitle);
-        projectLink.textContent = fields.title.value;
-        
-        this.currentProject.title = fields.title.value;
-        this.currentProject.description = fields.description.value;
-        this.currentProject.dueDate = dateTime;
-        this.currentProject.priority = fields.priority.value;
-
-        // close modal afterwards
-        this.closeModal();
-
-        // simulate a project link click so that the project display updates
-        projectLink.click();        
         event.preventDefault();
     }
 
@@ -351,6 +363,16 @@ export class DisplayController {
     checkFields(arr) {
         const isValid = (field) => field.checkValidity();
         return arr.every(isValid);
+    }
+
+    // make sure two projects don't have the same name
+    uniqueProjectTitle(title) {
+        const bool = this.projectsController.titleExists(title);
+        if (bool) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     // fills the form with some current project data
