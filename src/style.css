@@ -243,3 +243,13 @@ form > * {
     border: none;
     border-radius: 5px;
 }
+
+@media (pointer: fine) {
+    button.has-icon > .button-icon:hover {
+        background-color: rgb(3, 207, 3);
+    }
+
+    button.has-icon > .button-icon.close-icon:hover {
+        background-color: red;
+    }    
+}
