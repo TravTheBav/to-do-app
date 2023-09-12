@@ -36,11 +36,8 @@ a {
     text-decoration: none;
 }
 
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding-top: 1rem;
+main {    
+    padding-top: 2rem;
 }
 
 .bg-primary {
@@ -194,7 +191,8 @@ form > * {
 
 #current-project {
     display: none;
-    width: 50%;
+    width: 100vw;
+    padding-bottom: .5rem;
     height: auto;
 }
 
@@ -310,6 +308,13 @@ form > * {
         grid-area: main;
     }
 
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 1rem;
+    }
+
     .modal {
         padding: 1rem 3rem;
         z-index: 1;
@@ -318,6 +323,11 @@ form > * {
         transform: translate(-50%, -50%);
         width: auto;
         height: auto;
+    }
+
+    #current-project {
+        display: none;
+        width: 50%;
     }
 }
 
