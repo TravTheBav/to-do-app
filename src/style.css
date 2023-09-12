@@ -10,14 +10,25 @@
 html {
     min-height: 100%;
     color: beige;
+    font-size: 12px;
 }
 
 html, body {
     margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
 }
 
 body, .container {
-    height: 100vh;
+    height: 100vh;    
+}
+
+.container {
+    display: grid;
+    grid-template-rows: max-content max-content 1fr;
 }
 
 a {
@@ -29,27 +40,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.container {
-    display: grid;
-    grid-template-areas: 
-        "head head"
-        "nav  main";
-    grid-template-rows: 80px 1fr;
-    grid-template-columns: 240px 1fr;
-}
-
-.container > header {
-    grid-area: head;
-}
-
-.container > nav {
-    grid-area: nav;
-}
-
-.container > main {
-    grid-area: main;
+    padding-top: 1rem;
 }
 
 .bg-primary {
@@ -67,7 +58,7 @@ main {
 .top-header {
     display: flex;
     justify-content: space-between;
-    padding: 1rem;
+    padding: 0px 1rem;
 }
 
 .top-header > * {
@@ -155,11 +146,12 @@ button.has-icon > .button-icon {
     display: none;
     position: fixed;
     background-color: rgb(63, 60, 73);
-    padding: 1rem 3rem;
+    padding: 1rem 2rem;
     z-index: 1;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: calc(100vw - 4rem);
+    height: 100vh;
 }
 
 .form-control > input, .form-control textarea {
@@ -292,3 +284,45 @@ form > * {
         background-color: #454545;
     }
 }
+
+@media only screen and (min-width: 600px) {
+    html {
+        font-size: 14px;
+    }
+
+    .container {
+        grid-template-areas:
+        "head head"
+        "nav  main";
+        grid-template-rows: 80px 1fr;
+        grid-template-columns: 240px 1fr;
+    }
+
+    .container > header {
+        grid-area: head;
+    }
+    
+    .container > nav {
+        grid-area: nav;
+    }
+    
+    .container > main {
+        grid-area: main;
+    }
+
+    .modal {
+        padding: 1rem 3rem;
+        z-index: 1;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: auto;
+        height: auto;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    html {
+        font-size: 16px;
+    }
+} 
