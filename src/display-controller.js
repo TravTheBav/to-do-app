@@ -33,6 +33,7 @@ export class DisplayController {
             this.deleteProjectLink(index);
             this.projectsController.deleteProject(this.currentProject);      
             this.closeCurrentProject();
+            this.projectsController.removeProjectFromStorage();
         }
     }
 

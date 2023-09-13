@@ -2,8 +2,8 @@ import './style.css';
 import _ from 'lodash';
 import { DisplayController } from "./display-controller";
 
-if (!localStorage.getItem('project-id')) {
-    localStorage.setItem('project-count', 0);
+if (!localStorage.getItem('uniq-id')) {
+    localStorage.setItem('uniq-id', 0);
 }
 
 if (!localStorage.getItem('projects')) {

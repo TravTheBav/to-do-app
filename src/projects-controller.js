@@ -37,14 +37,14 @@ export class ProjectsController {
     }
 
     loadProjects() {
-        localStorage.setItem('project-count', 0);
         let arr = JSON.parse(localStorage.getItem('projects'));
         for (let i=0; i < arr.length; i++) {
             const p = new Project(
                 arr[i]._title,
                 arr[i]._description,
                 arr[i]._dueDate,
-                arr[i]._priority
+                arr[i]._priority,
+                arr[i].id
             );
             for (let j=0; j < arr[i]._tasks.length; j++) {
                 const t = new Task(arr[i]._tasks[j]._description);
@@ -78,5 +78,9 @@ export class ProjectsController {
             arr.push(project);
             localStorage.setItem('projects', JSON.stringify(arr));
         }        
+    }
+
+    removeProjectFromStorage() {
+        localStorage.setItem('projects', JSON.stringify(this._projects));        
     }
 }

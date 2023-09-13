@@ -1,6 +1,10 @@
 export class Project {
-    constructor(title, description, dueDate, priority) {
-        this.id = this.createProjectId();
+    constructor(title, description, dueDate, priority, id=null) {
+        if (!id) {
+            this.id = this.createProjectId();
+        } else {
+            this.id = id
+        }
         this._title = title
         this._description = description
         this._dueDate = dueDate
@@ -65,8 +69,8 @@ export class Project {
     }
 
     createProjectId() {
-        let i = parseInt(localStorage.getItem("project-count")) + 1;
-        localStorage.setItem('project-count', i);
+        let i = parseInt(localStorage.getItem("uniq-id")) + 1;
+        localStorage.setItem('uniq-id', i);
         return i;
     }
 }
