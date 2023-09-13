@@ -52,7 +52,7 @@ main {
     background-color: rgb(59, 56, 56);
 }
 
-.top-header {
+.top-header, .nav-header {
     display: flex;
     justify-content: space-between;
     padding: 0px 1rem;
@@ -63,17 +63,14 @@ main {
     align-items: center;
 }
 
-section#projects > h2 {
-    margin-left: .8em;
-}
-
 section#projects > ul {
     padding-left: 0px;
+    margin: 0px;
 }
 
 section#projects > ul li {
     list-style: none;
-    padding: 0.5em 2em;
+    padding: 1em 2em;
 }
 
 button.has-icon {
@@ -123,6 +120,16 @@ button.has-icon > .button-icon {
 .close-icon {
     -webkit-mask-image: url('./icons/x-square.svg');
     mask-image: url('./icons/x-square.svg');
+}
+
+.collapsed-icon {
+    -webkit-mask-image: url('./icons/chevron-up.svg');
+    mask-image: url('./icons/chevron-up.svg');
+}
+
+.expanded-icon {
+    -webkit-mask-image: url('./icons/chevron-down.svg');
+    mask-image: url('./icons/chevron-down.svg');
 }
 
 .small-icon {
@@ -283,7 +290,7 @@ form > * {
     }
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 800px) {
     html {
         font-size: 14px;
     }
@@ -327,11 +334,11 @@ form > * {
 
     #current-project {
         display: none;
-        width: 50%;
+        width: 70%;
     }
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 1200px) {
     html {
         font-size: 16px;
     }

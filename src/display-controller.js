@@ -485,6 +485,29 @@ export class DisplayController {
         }).bind(this))
     }
 
+    // sets event listener for the projects list accordian button
+    initProjectsListAccordian() {
+        let accordianBtn = document.querySelector('nav button.accordian');
+        accordianBtn.addEventListener('click', this.toggleProjectsListState.bind(this));
+    }
+
+    toggleProjectsListState() {
+        let accordianBtn = document.querySelector('nav button.accordian');
+        let icon = accordianBtn.firstElementChild;
+        
+        if (this.projectsContainer.classList.contains('collapsed')) {
+            icon.classList.remove('collapsed-icon');
+            icon.classList.add('expanded-icon');
+            this.projectsContainer.classList.remove('collapsed');
+            this.projectsContainer.style.display = 'block';
+        } else {
+            icon.classList.remove('expanded-icon');
+            icon.classList.add('collapsed-icon');
+            this.projectsContainer.classList.add('collapsed');
+            this.projectsContainer.style.display = 'none';
+        }
+    }
+
     // initializes all listeners for buttons that are present on page load
     initListeners() {
         const modals = document.querySelectorAll('.modal');
@@ -498,6 +521,7 @@ export class DisplayController {
         this.initCloseCurrentProjectListener();
         this.initEditProjectListener();
         this.initUpdateProjectListener();
-        this.initDeleteProjectListener()
+        this.initDeleteProjectListener();
+        this.initProjectsListAccordian();
     }
 }
