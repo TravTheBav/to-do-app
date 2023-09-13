@@ -1,5 +1,6 @@
 export class Project {
     constructor(title, description, dueDate, priority) {
+        this.id = this.createProjectId();
         this._title = title
         this._description = description
         this._dueDate = dueDate
@@ -61,5 +62,11 @@ export class Project {
 
     updateTaskDescription(index, text) {
         this._tasks[index].description = text;
+    }
+
+    createProjectId() {
+        let i = parseInt(localStorage.getItem("project-count")) + 1;
+        localStorage.setItem('project-count', i);
+        return i;
     }
 }

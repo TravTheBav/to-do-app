@@ -69,8 +69,7 @@ export class DisplayController {
             );     
             this.projectsController.addProject(project);
             this.addProject(project);
-    
-            // close modal afterwards
+            this.projectsController.saveProject(project);
             this.closeModal();
         }
                 
@@ -109,7 +108,7 @@ export class DisplayController {
             this.currentProject.dueDate = dateTime;
             this.currentProject.priority = fields.priority.value;
     
-            // close modal afterwards
+            this.projectsController.saveProject(this.currentProject);
             this.closeModal();
     
             // simulate a project link click so that the project display updates
@@ -141,6 +140,14 @@ export class DisplayController {
 
         projectLink.appendChild(listItem);
         this.projectsContainer.appendChild(projectLink);
+    }
+
+    // repopulates the projects navigation with all project links on page reload
+    repopulateProjectLinks() {
+        let projects = this.projectsController.projects;
+        for (let i=0; i < projects.length; i++) {
+            this.addProject(projects[i]);
+        }
     }
 
     // closes current project display
