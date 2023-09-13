@@ -1,4 +1,5 @@
 import { Project } from "./project";
+import { Task } from "./task";
 
 export class ProjectsController {
     constructor() {
@@ -45,6 +46,13 @@ export class ProjectsController {
                 arr[i]._dueDate,
                 arr[i]._priority
             );
+            for (let j=0; j < arr[i]._tasks.length; j++) {
+                const t = new Task(arr[i]._tasks[j]._description);
+                if (arr[i]._tasks[j]._checked) {
+                    t.toggleChecked(); // tasks are initialized unchecked so make sure to recheck
+                }
+                p.addTask(t);
+            }
             this.addProject(p);
         }
         localStorage.setItem('projects', JSON.stringify(arr));
@@ -55,6 +63,7 @@ export class ProjectsController {
         let arr = JSON.parse(localStorage.getItem('projects'));
         let found = false;
 
+        // if project exists, replace the project in storage
         let p = arr.find((o, i) => {
             if (o.id == project.id) {
                 arr[i] = project;
@@ -64,6 +73,7 @@ export class ProjectsController {
             }
         });
 
+        // if it does not exist, add it to storage
         if (!found) {
             arr.push(project);
             localStorage.setItem('projects', JSON.stringify(arr));

@@ -249,6 +249,7 @@ export class DisplayController {
         
         this.currentProject.addTask(task);
         this.appendTaskToDOM(task);
+        this.projectsController.saveProject(this.currentProject);
     }
 
     // remove a task from the current project object and the project's display
@@ -257,6 +258,7 @@ export class DisplayController {
         this.currentProject.removeTaskAtIndex(index);
         const tasksList = this.getTasksList();
         tasksList.children.item(index).remove();
+        this.projectsController.saveProject(this.currentProject);
     }
 
     // allows a task description to be edited
@@ -278,6 +280,7 @@ export class DisplayController {
             spanEle.textContent = text;
             listItem.replaceChild(spanEle, input);
             this.currentProject.updateTaskDescription(index, text);
+            this.projectsController.saveProject(this.currentProject);
         }).bind(this);
 
         input.addEventListener('keydown', (event) => {
@@ -287,7 +290,7 @@ export class DisplayController {
         });
 
         listItem.replaceChild(input, ele);
-        input.focus();  
+        input.focus();
     }
 
     // toggles a task checkbox
@@ -302,6 +305,7 @@ export class DisplayController {
     // notifies a task when it is checked on the display
     toggleTaskCheckedStatus(task) {
         task.toggleChecked();
+        this.projectsController.saveProject(this.currentProject);
     }
 
     // adds all of the current project tasks to the tasks display via the helper method
