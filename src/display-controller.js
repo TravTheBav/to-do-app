@@ -1,4 +1,4 @@
-import { formatTimeString } from './date-time-helpers';
+import { formatTimeString, formattedDateInputString } from './date-time-helpers';
 import { Project } from "./project";
 import { ProjectsController } from "./projects-controller";
 import { Task } from "./task";
@@ -394,6 +394,10 @@ export class DisplayController {
         const description = form.querySelector('textarea#description');
         title.value = this.currentProject.title;
         description.value = this.currentProject.description;
+
+        const dueDate = form.querySelector('input#due-date');
+        const d = formattedDateInputString(this.currentProject.dueDate);
+        dueDate.value = d;
     }
 
     // sets the project form to the appropriate mode i.e. - create or update
